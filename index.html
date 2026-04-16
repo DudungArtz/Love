@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: black;
+  overflow: hidden;
+  color: white;
+}
+
+/* OPENING */
+#opening {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 10;
+}
+
+#opening button {
+  padding: 15px 30px;
+  font-size: 20px;
+  border-radius: 20px;
+  border: none;
+  background: pink;
+  cursor: pointer;
+}
+
+/* CINEMATIC */
+.cinematic {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cinematic img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 2s ease-in-out, transform 8s ease-in-out;
+  filter: brightness(0.8) contrast(1.1);
+}
+
+.cinematic img.active {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* overlay */
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+}
+
+/* text */
+#typing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  text-align: center;
+  width: 80%;
+}
+
+/* heart effect */
+.heart {
+  position: absolute;
+  color: red;
+  animation: float 3s linear;
+}
+
+@keyframes float {
+  0% {transform: translateY(0); opacity:1;}
+  100% {transform: translateY(-200px); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- OPENING -->
+<div id="opening">
+  <h1>❤️ Ada sesuatu buat kamu</h1>
+  <button onclick="start()">Buka ❤️</button>
+</div>
+
+<!-- MAIN -->
+<div id="main" style="display:none;">
+
+  <div class="cinematic">
+    <img src="foto1.jpg" class="slide active">
+    <img src="foto2.jpg" class="slide">
+    <img src="foto3.jpg" class="slide">
+
+    <div class="overlay"></div>
+    <div id="typing"></div>
+  </div>
+
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* START */
+function start() {
+  document.getElementById("opening").style.display = "none";
+  document.getElementById("main").style.display = "block";
+  document.getElementById("music").play();
+  typeText();
+  cinematicSlide();
+}
+
+/* TYPING */
+let text = "LOVEEE UUUUU GEKK ICIIII❤️";
+let i = 0;
+
+function typeText() {
+  if (i < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeText, 50);
+  }
+}
+
+/* CINEMATIC SLIDE */
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function cinematicSlide() {
+  slides.forEach(img => img.classList.remove("active"));
+
+  slides[index].classList.add("active");
+
+  index++;
+  if (index >= slides.length) index = 0;
+
+  setTimeout(cinematicSlide, 5000);
+}
+
+/* LOVE CLICK EFFECT */
+document.addEventListener("click", function(e){
+  let heart = document.createElement("div");
+  heart.innerHTML = "❤️";
+  heart.className = "heart";
+  heart.style.left = e.clientX + "px";
+  heart.style.top = e.clientY + "px";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 3000);
+});
+
+</script>
+
+</body>
+</html>
